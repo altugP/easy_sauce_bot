@@ -1,4 +1,4 @@
-const { searchWithGoogle } = require('./search')
+const { searchWithGoogle, searchWithTinEye } = require('./search')
 
 const googleImages = [
     'https://upload.wikimedia.org/wikipedia/commons/f/f1/Dwayne_Johnson_2%2C_2013.jpg',
@@ -16,4 +16,21 @@ async function testListSearchWithGoogle() {
     }
 }
 
-testListSearchWithGoogle()
+// testListSearchWithGoogle()
+
+
+const tineyeImages = [
+    'https://i.redd.it/yi3t2xcgfx661.png',
+    'asdfasdf',
+    'https://i.redd.it/cbntfkzd0op71.png'
+]
+
+async function testListSearchWithTinEye() {
+    for (let i = 0; i < tineyeImages.length; i++) {
+        const result = await searchWithTinEye(tineyeImages[i], true)
+        console.log(`Search [${i + 1}]`)
+        console.log(result)
+    }
+}
+
+testListSearchWithTinEye()
