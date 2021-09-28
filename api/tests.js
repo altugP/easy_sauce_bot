@@ -1,4 +1,4 @@
-const { searchWithGoogle, searchWithTinEye } = require('./search')
+const { searchWithGoogle, searchWithTinEye, searchWithSauceNao } = require('./search')
 
 const googleImages = [
     'https://upload.wikimedia.org/wikipedia/commons/f/f1/Dwayne_Johnson_2%2C_2013.jpg',
@@ -33,4 +33,19 @@ async function testListSearchWithTinEye() {
     }
 }
 
-testListSearchWithTinEye()
+// testListSearchWithTinEye()
+
+
+const sauceNaoImages = [
+    'http://i.imgur.com/5yFTeRV.png',
+]
+
+async function testListSearchWithSauceNao() {
+    for (let i = 0; i < sauceNaoImages.length; i++) {
+        const result = await searchWithSauceNao(sauceNaoImages[i])
+        console.log(`Search [${i + 1}]`)
+        console.log(result)
+    }
+}
+
+testListSearchWithSauceNao()

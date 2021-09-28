@@ -342,9 +342,74 @@ async function _parseSearchResult(page) {
 }
 
 // ############################################################################
+// SauceNao Search.
+// ############################################################################
+/**
+ * Takes an image url and performs a search on SauceNao using that image.
+ * 
+ * This uses the SauceNao web API for it's search. Therefore an API key has to
+ * be provided in `.env` for this to work. See the `README.md` file for more
+ * info.
+ * 
+ * Uses SauceNao for everything. If this is successful, an object will be
+ * returned. That object will contain it's `header` information as well as
+ * a `results` field with all matches.
+ * 
+ * If this fails this will return an object with only a `header`. The error
+ * code will be found in `status` (!= 0) and a short description of the error
+ * will be found in `message` of that header.
+ * 
+ * @param {string} imageUrl Url to the image that has to be searched.
+ * @param {number?} numres Amount of (max) results to be shown. Default = 16.
+ * @returns {[object]} An array of SauceNao match objects. Those objects have two
+ * fields: `header` for meta data and `data` for details. Those objects'
+ * `header`s are built the same. They give information about `similarity`
+ * {number} in % to the original image, `thumbnail` {string} (url), `index_id`
+ * {number} of their server, `index_name` {string} as readable name for their
+ * server, `dupes` {number} amount of duplicates found of this image. The
+ * objects' `data` fields are dependant on their actual index. Read SauceNaos
+ * documentation for more infos.
+ */
+async function searchWithSauceNao(imageUrl, numres = 16) {
+    // Building the search URL.
+    const db = 999 // Use all databases for image lookup.
+    const outputType = 2 // Using JSON as data format.
+    const url = imageUrl
+
+    //? Making an HTTP GET call to `baseUrl` should start the search now.
+    let baseUrl = 'https://saucenao.com/search.php'
+    baseUrl += `?db=${db}`
+    baseUrl += `&output_type=${outputType}`
+    baseUrl += `&api_key=${process.env.SAUCENAO_API_KEY}`
+    baseUrl += `&numres=${numres}`
+    baseUrl += `&url=${url}`
+
+    // Making the request and parsing the respnse.
+    const response = await axios.get(baseUrl)
+    const jsonResponse = response.data
+
+    const data = await _parseSauceNaoResponse(jsonResponse)
+    return data
+}
+
+async function _parseSauceNaoResponse(res) {
+    // Checking for errors.
+    const status = res.header.status
+    if (status !== 0) {
+        // Could be handled better, but I think this is something for the bot 'front end'.
+        // Error text is in `header.message`
+        return res
+    }
+
+    // Straight up returning all data as is (without the header).
+    return res.results
+}
+
+// ############################################################################
 // Exports.
 // ############################################################################
 module.exports = {
     searchWithGoogle: searchWithGoogle,
     searchWithTinEye: searchWithTinEye,
+    searchWithSauceNao: searchWithSauceNao,
 }
