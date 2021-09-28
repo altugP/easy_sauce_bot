@@ -4,8 +4,8 @@
   "description": "A simple Discord bot to gather information about the source of images.",
   "main": "index.js",
   "scripts": {
-    "deploy": "node deploy_commands.js",
-    "start": "node index.js"
+    "deploy": "node bot/deploy_commands.js",
+    "start": "node bot/index.js"
   },
   "repository": {
     "type": "git",
