@@ -10,6 +10,9 @@ const fs = require('fs')
 // ############################################################################
 dotenv.config()
 
+// ############################################################################
+// Command Handling.
+// ############################################################################
 // `client` is the actual bot instance.
 const client = new Client({ intents: [Intents.FLAGS.GUILDS] })
 // This stores all commands that the client has put available.
@@ -29,33 +32,23 @@ for (const file of commandFiles) {
 // ############################################################################
 // Event Handling.
 // ############################################################################
-// Run on start.
-client.once('ready', () => {
-    console.log('Bot started.')
-})
-
-// Run every time someone interacts with the bot or in the bot's presence.
-client.on('interactionCreate', async (interaction) => {
-    // If the interaction is not a command it can be ignored for now.
-    if (!interaction.isCommand()) return
-
-    // Fetching the command from the client's `commands` Collection.
-    const command = client.commands.get(interaction.commandName)
-
-    // If the command doesn't exist, something went wrong.
-    //? Could have been a deleted command.
-    if (!command) return
-
-    try {
-        await command.execute(interaction)
-    } catch (error) {
-        console.error(error)
-        await interaction.reply({
-            content: 'An error occurred while executing this command.',
-            ephemeral: true, //? Only visible to the user that called this.
-        })
+// Reading all event files from their repository and binding them to the bot.
+const _eventDirectoryAbs = 'bot/events' //? Use this for `fs`.
+const _eventDirectoryRel = './events' //? Use this for `require`.
+const _eventFileEnding = '.js'
+const eventFiles = fs.readdirSync(_eventDirectoryAbs)
+    .filter((f) => f.endsWith(_eventFileEnding))
+for (const file of eventFiles) {
+    const event = require(`${_eventDirectoryRel}/${file}`)
+    // Run only once.
+    if (event.once) {
+        client.once(event.name, (...args) => event.execute(...args))
     }
-})
+    // Run every time the specific event occurrs.
+    else {
+        client.on(event.name, (...args) => event.execute(...args))
+    }
+}
 
 // ############################################################################
 // Bot activity.
