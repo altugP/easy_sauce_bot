@@ -1,0 +1,17 @@
+> Initially an interaction token is only valid
+> for three seconds, so that's the timeframe in
+> which you are able to use the CommandInteraction#reply()
+> method. Responses that require more time ("Deferred Responses")
+> are explained later in this page.
+
+=> commands that take long can not reply
+=> I could edit the response later. `interaction.editReply('asdasdasd')`
+   prolongs the lifespan of the bot's replyability by 15 minutes.
+=> there is also a `interaction.deferReply('asdadasd')`. When called the
+   bot will show `thinking...` while working. This also allows for 15
+   minutes of taks completion time.
+   => await interaction.deferReply() // One can also pass { ephemeral: true }.
+      await wait(4000) // Do some calculations or something idk.
+      await interaction.editReply('Real Content')
+=> interaction.followUp('asdasdasd') allows sending a second message after
+   the first one. It will also be a direct reply to the first message by the bot.

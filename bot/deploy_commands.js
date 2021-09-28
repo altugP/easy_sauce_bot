@@ -1,7 +1,6 @@
 // ############################################################################
 // Imports.
 // ############################################################################
-const { SlashCommandBuilder } = require('@discordjs/builders')
 const { REST } = require('@discordjs/rest')
 const { Routes } = require('discord-api-types/v9')
 const dotenv = require('dotenv')
@@ -35,8 +34,45 @@ for (const file of commandFiles) {
 // ############################################################################
 // Registering via REST requests.
 // ############################################################################
-const rest = new REST({ version: '9' }).setToken(token);
+const rest = new REST({ version: '9' }).setToken(token)
 
-rest.put(Routes.applicationGuildCommands(clientId, guildId), { body: commands })
-    .then(() => console.log('Successfully registered application commands.'))
-    .catch(console.error);
+/**
+ * Registers all commands in `./commands` on Discord so the user can see them
+ * in their client.
+ * 
+ * Explanations:
+ * - `Application Guild Commands`: Only available in the guild (server) they are
+ * created in. This needs the `application.commands` scope on the Discord bot.
+ * These should be used to test commands. Which guild these will be on is
+ * declared in `.env` (see README.md).
+ * - `(Global) Application Commands:`: Active on every guild (server) the bot is
+ * on. These commands take up to 1 hour to register, which is why these should
+ * only contain finished and tested commands.
+ * 
+ * @param {bool} global Should commands be globally enabled?. 
+ * @returns {object} see above.
+ */
+async function registerSlashCommands(global) {
+    try {
+        console.log(`Started refreshing application (/) commands \
+(${global ? 'global' : 'guild only'}).`)
+
+        if (global) {
+            await rest.put(
+                Routes.applicationCommands(clientId, guildId),
+                { body: commands }
+            )
+        } else {
+            await rest.put(
+                Routes.applicationGuildCommands(clientId, guildId),
+                { body: commands }
+            )
+        }
+
+        console.log('Successfully reloaded application (/) commands.')
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+registerSlashCommands(false)
