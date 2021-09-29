@@ -259,16 +259,16 @@ function _buildEmbedFromResult(result) {
         - twitter_user_handle (string)
     */
     if (indexId === 41) {
-        author = `${result.data.twitter_user_handle} (${result.data.twitter_user_id})`
+        author = `@${result.data.twitter_user_handle}`
         fields.push({ name: 'Tweet ID', value: `${_fixValue(result.data.tweet_id)}` })
         fields.push({ name: 'Creation Date', value: `${_fixValue(result.data.created_at)}` })
     }
 
     // Quick check if some data is missing. Everything not on here is mandatory
     // in SauceNao's responses.
-    if (author === undefined || author === null
+    if (!author || author === undefined || author === null
         || author === 'undefined' || author === 'null') author = 'Unknown author'
-    if (title === undefined || title === null
+    if (!title || title === undefined || title === null
         || title === 'undefined' || title === 'null') title = 'Untitled'
 
     // Creating the actual embed with all relevant info.
