@@ -361,14 +361,16 @@ async function _parseSearchResult(page) {
  * 
  * @param {string} imageUrl Url to the image that has to be searched.
  * @param {number?} numres Amount of (max) results to be shown. Default = 16.
- * @returns {[object]} An array of SauceNao match objects. Those objects have two
- * fields: `header` for meta data and `data` for details. Those objects'
- * `header`s are built the same. They give information about `similarity`
+ * @returns {object} An object with a `header` field as well as `results`
+ * field in case of success. `header` will contain `status` and a `message`
+ * explaining the status. `results` is an array of SauceNao match objects.
+ * Those objects have two fields: `header` for meta data and `data` for details.
+ * Those objects' `header`s are built the same. They give information about `similarity`
  * {number} in % to the original image, `thumbnail` {string} (url), `index_id`
  * {number} of their server, `index_name` {string} as readable name for their
- * server, `dupes` {number} amount of duplicates found of this image. The
- * objects' `data` fields are dependant on their actual index. Read SauceNaos
- * documentation for more infos.
+ * server, `dupes` {number} amount of duplicates found of this image. The objects'
+ * `data` fields are dependant on their actual index. Read SauceNaos documentation
+ * for more infos.
  */
 async function searchWithSauceNao(imageUrl, numres = 16) {
     // Building the search URL.
@@ -397,12 +399,23 @@ async function _parseSauceNaoResponse(res) {
     const status = res.header.status
     if (status !== 0) {
         // Could be handled better, but I think this is something for the bot 'front end'.
-        // Error text is in `header.message`
-        return res
+        return {
+            header: {
+                status: res.header.status,
+                message: res.header.message,
+            }
+        }
     }
 
-    // Straight up returning all data as is (without the header).
-    return res.results
+    // Returning all data with a manually created message.
+    //? `message` is undefined if `status` === 0 from API.
+    return {
+        header: {
+            status: res.header.status,
+            message: 'Successful search.',
+        },
+        results: res.results,
+    }
 }
 
 // ############################################################################
