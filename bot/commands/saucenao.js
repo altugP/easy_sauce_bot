@@ -2,7 +2,7 @@
 // Imports.
 // ############################################################################
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js')
+const { MessageEmbed } = require('discord.js')
 const api = require('./../../api/search')
 
 // ############################################################################
@@ -47,7 +47,7 @@ function _fixValue(value) {
  */
 function _buildEmbedFromResult(result) {
     // Basic variables that need to be displayed.
-    const color = process.env.COLOR_INFORMATION
+    const color = process.env.COLOR_SUCCESS
     let author = null
     let title = `${result.data.title}`
     let directUrl = result.data.ext_urls
