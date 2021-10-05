@@ -32,10 +32,14 @@ const _userAgent = 'Mozilla/5.0 (X11; Linux x86_64)' +
  * 2. `imageTextClues` {[string]} Tags that Google thinks describe this image.
  * 3. `localPath` {string} Path to a screenshot that has been taken from the search
  * results.
+ * 4. `entryData` {[object]} The first 5 (or less) entries of the search. This
+ * array will contain objects with 2 fields only: `text` which is the text of the
+ * image link and `url` which is the destination of the image link from Google.
  * 
  * If Google cannot find the given image via it's url or Google cannot find
  * any similar images, this will not send the screenshot or the clue text. The
  * object will still be in the same form, but `localPath` will be `null`.
+ * `entryData` will be an empty array if the search fails.
  * 
  * @param {string} imageUrl Url to the image that has to be searched.
  * @param {bool?} headless Whether the Chromium instance should start headless or not.
@@ -76,6 +80,8 @@ async function searchWithGoogle(imageUrl, headless) {
     let imageTextClues = 'No useful clues found :(' // What Google thinks describes the given image best.
     // Path where the screenshot will be stored if search is successful.
     let screenshotPath = null
+    // Stores about 5 entries of the image search results.
+    const imageEntries = []
 
     // If the `similar images` link is found, the browser navigates to Googles
     // image view. Otherwise this step is skipped and the algorithm terminates.
@@ -90,6 +96,50 @@ async function searchWithGoogle(imageUrl, headless) {
         // Getting the clue text's value.
         const clueTextElement = await page.$x(clueTextXPath)
         imageTextClues = await (await clueTextElement[0].getProperty('value')).jsonValue()
+
+        // Container.
+        const entryContainerXPath = '//*[@id="islrg"]/div[1]'
+        const numberOfEntries = await page.evaluate((c) =>
+            document.evaluate(
+                c,
+                document,
+                null,
+                XPathResult.FIRST_ORDERED_NODE_TYPE,
+                null)
+                .singleNodeValue
+                .children
+                .length,
+            entryContainerXPath,
+        )
+
+        if (numberOfEntries > 0) {
+            const max = numberOfEntries < 5 ? numberOfEntries : 5
+            // Elements.
+            // ? Number starts at 1 for entries.
+            const elementTemplateXPath = '//*[@id="islrg"]/div[1]/div[NUMBER]'
+            for (let i = 1; i < max + 1; i++) {
+                const c = elementTemplateXPath.replace('NUMBER', `${i}`)
+                const imageEntry = await page.evaluate((c) => {
+                    const a = document.evaluate(
+                        c,
+                        document,
+                        null,
+                        XPathResult.FIRST_ORDERED_NODE_TYPE,
+                        null)
+                        .singleNodeValue
+                        .children[1]
+                    const text = a.textContent
+                    const url = a.href
+                    return {
+                        text: text,
+                        url: url,
+                    }
+                },
+                    c,
+                )
+                imageEntries.push(imageEntry)
+            }
+        }
     }
 
     // Closing the browser to free up memory.
@@ -100,6 +150,7 @@ async function searchWithGoogle(imageUrl, headless) {
         searchUrl: fullUrl,
         imageTextClues: imageTextClues,
         localPath: screenshotPath,
+        entryData: imageEntries,
     }
 }
 
