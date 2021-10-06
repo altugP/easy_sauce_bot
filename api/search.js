@@ -47,9 +47,9 @@ const _userAgent = 'Mozilla/5.0 (X11; Linux x86_64)' +
  * @returns {object} see above.
  */
 async function searchWithGoogle(imageUrl, headless) {
+    const similarImagesXPath = '//*[@id="rso"]/div[2]/div/div[2]/g-section-with-header/div[1]/title-with-lhs-icon/a/div[2]/h3'
     //? These 2 are the XPath paths to the buttons that need to be clicked
     //? before the search results can be retrieved.
-    const similarImagesXPath = '//*[@id="rso"]/div[2]/div/div[2]/g-section-with-header/div[1]/title-with-lhs-icon/a/div[2]/h3'
     const acceptCookiesButtonXPath = '//*[@id="L2AGLb"]'
     const clueTextXPath = '//*[@id="REsRA"]'
 
@@ -70,6 +70,71 @@ async function searchWithGoogle(imageUrl, headless) {
     //? Without accepting this, you can not navigate further.
     const cookiesButton = await page.$x(acceptCookiesButtonXPath)
     await cookiesButton[0].click()
+    await page.waitForNavigation({ waitUntil: 'networkidle2' })
+
+    // Searching for sites containing the image.
+    //? The `Sites with matching images` label contains this as CSS class.
+    //? This option may not exist or only exists once per site.
+    //? Every link classed `g` will be of sites that have the searched image
+    //? posted on there.
+    const matchingImagesTextClass = '.normal-header'
+    //? This is a container class that contains links to other sites. Those
+    //? sites have the `g` CSS glass. Only the links that are inside a block
+    //? which contains the element with `matchingImagesTextClass` are to be
+    //? considered here, since the rest may be irrelevant.
+    const linkBlockClass = '.ULSxyf'
+    const linkClass = '.g'
+
+    const matchingImageLinks = await page.evaluate((blocks, label, link) => {
+        const allBlocksNodeList = document.querySelectorAll(blocks)
+
+        console.log('all blocks')
+        console.log(allBlocksNodeList)
+
+        if (allBlocksNodeList !== undefined && allBlocksNodeList !== null) {
+            // All CSS blocks containing `g` elements are in this NodeList.
+            const allBlocks = Array.from(allBlocksNodeList)
+            if (allBlocks.length <= 0) {
+                // No block elements found. This is an error!
+                return null
+            }
+
+            // Filtering for only the block with the label in it.
+            const tmpArr = allBlocks.filter((e) => e.querySelectorAll(label).length > 0)
+            if (!tmpArr || tmpArr.length <= 0) {
+                // No label found. This is an error.
+                return null
+            }
+
+            // This block contains the label as well as all links containing the image.
+            const block = tmpArr[0]
+            const relevantLinks = [] //? This will hold all links in a good format.
+
+            //? This holds all relevant links as `div` element.
+            const relevantElements = Array.from(block.querySelectorAll(link))
+
+            for (let i = 0; i < relevantElements.length; i++) {
+                // (g) -> div -> .tF2Cxc -> 
+                // 1) .yuRUbf -> a (contains link in href) -> h3 (contains text as headline)
+                // 2) .IsZvec -> div[1] -> div (contains text, potentially formated using spans)
+                const el = relevantElements[i]
+                const elLinkUrl = el.querySelectorAll('div>.tF2Cxc>.yuRUbf>a')[0].href
+                const elLinkHeadline = el.querySelectorAll('div>.tF2Cxc>.yuRUbf>a>h3')[0].textContent
+                const elLinkDescription = el.querySelectorAll('div>.tF2Cxc>.IsZvec>div')[1].textContent
+
+                relevantLinks.push({
+                    headline: elLinkHeadline,
+                    descriptop: elLinkDescription,
+                    url: elLinkUrl,
+                })
+            }
+
+            return relevantLinks
+        }
+
+        // No block elements found. This is an error!
+        return null
+    }, linkBlockClass, matchingImagesTextClass, linkClass)
 
     // Searching for the `similar images` link.
     //? If it is not on this page then Google could not find any similar images.
@@ -151,6 +216,7 @@ async function searchWithGoogle(imageUrl, headless) {
         imageTextClues: imageTextClues,
         localPath: screenshotPath,
         entryData: imageEntries,
+        matchingSitesData: !matchingImageLinks ? [] : matchingImageLinks,
     }
 }
 
