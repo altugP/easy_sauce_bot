@@ -19,14 +19,20 @@ async function handleCommand(interaction) {
     } catch (error) {
         console.error(error)
 
-        /*
-        //? This should only be called if the interaction hasn't been replied to yet.
-        await interaction.reply({
-            content: 'An error occurred while executing this command.',
-            ephemeral: true, //? Only visible to the user that called this.
-        })
-        */
-
+        try {
+            //? This should only be called if the interaction hasn't been replied
+            //? to yet.
+            await interaction.reply({
+                content: 'An error occurred while executing this command.',
+                ephemeral: true, //? Only visible to the user that called this.
+            })
+        } catch (error) {
+            //? This is called if the interaction has already been replied to.
+            await interaction.followUp({
+                content: 'An error occurred while executing this command.',
+                ephemeral: true, //? Only visible to the user that called this.
+            })
+        }
     }
 }
 

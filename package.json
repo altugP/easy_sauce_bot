@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "deploy": "node bot/deploy_commands.js",
+    "deploy-global": "node bot/deploy_commands.js --global",
     "start": "node bot/index.js"
   },
   "repository": {

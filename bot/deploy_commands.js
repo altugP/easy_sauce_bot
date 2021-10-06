@@ -75,4 +75,10 @@ async function registerSlashCommands(global) {
     }
 }
 
-registerSlashCommands(false)
+// ############################################################################
+// Execution of script.
+// ############################################################################
+const args = process.argv.slice(2)
+console.log('Startig script with arguments:')
+console.log(args)
+registerSlashCommands(args.includes('--global'))
