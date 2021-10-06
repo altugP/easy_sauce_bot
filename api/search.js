@@ -124,7 +124,7 @@ async function searchWithGoogle(imageUrl, headless) {
 
                 relevantLinks.push({
                     headline: elLinkHeadline,
-                    descriptop: elLinkDescription,
+                    description: elLinkDescription,
                     url: elLinkUrl,
                 })
             }

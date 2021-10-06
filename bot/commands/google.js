@@ -103,5 +103,33 @@ module.exports = {
                 files: [result.localPath]
             })
         }
+
+        // Following up test.
+        if (result.matchingSitesData.length > 0) {
+            const matchingSitesEmbeds = []
+            const matchMaxIndex = result.matchingSitesData.length > 5
+                ? 5
+                : result.matchingSitesData.length
+            for (let i = 0; i < matchMaxIndex; i++) {
+                const match = result.matchingSitesData[i]
+                matchingSitesEmbeds.push(
+                    new MessageEmbed()
+                        .setColor(process.env.COLOR_INFORMATION)
+                        .setAuthor(interaction.client.user.username,
+                            interaction.client.user.avatarURL())
+                        .setDescription(`Google Hints: ${match.description}`)
+                        .setURL(match.url)
+                        .setThumbnail(url) //? This should never cause any issues, since the image has been found elsewhere already.
+                        .setTitle(`Match: **${match.headline}**`)
+                        .addFields({ name: 'Url', value: match.url, })
+                        .setTimestamp()
+                )
+            }
+            // Sending the embeds as a follow up message.
+            await interaction.followUp({
+                content: `Here are some sites that contain a similiar image to yours on a subsite.`,
+                embeds: matchingSitesEmbeds,
+            })
+        }
     }
 }
