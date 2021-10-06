@@ -26,7 +26,7 @@ const _userAgent = 'Mozilla/5.0 (X11; Linux x86_64)' +
  * This function uses Puppeteer to perform a Google image search instead of the
  * Google API. Therefore this may take some time to load.
  * 
- * If the search is successful this will return an object with three entires:
+ * If the search is successful this will return an object with these entires:
  * 1. `searchUrl` {string} The complete url that will perform the same search when
  * clicked.
  * 2. `imageTextClues` {[string]} Tags that Google thinks describe this image.
@@ -35,11 +35,17 @@ const _userAgent = 'Mozilla/5.0 (X11; Linux x86_64)' +
  * 4. `entryData` {[object]} The first 5 (or less) entries of the search. This
  * array will contain objects with 2 fields only: `text` which is the text of the
  * image link and `url` which is the destination of the image link from Google.
+ * 5. `matchingSitesData` {[object]} The first 5 or less entries on Google that contain
+ * the image on their site. These objects will have three fields: `headline` which is
+ * the text of the link on Google, `description` which is the text underneath the link
+ * and `url` which is a direct url to the site. The url does not necessarily have to
+ * link to a site containing the image. It may be nested on there as well.
  * 
  * If Google cannot find the given image via it's url or Google cannot find
  * any similar images, this will not send the screenshot or the clue text. The
  * object will still be in the same form, but `localPath` will be `null`.
- * `entryData` will be an empty array if the search fails.
+ * `entryData` will be an empty array if the search fails. The same goes for
+ * `matchingSitesData`.
  * 
  * @param {string} imageUrl Url to the image that has to be searched.
  * @param {bool?} headless Whether the Chromium instance should start headless or not.
