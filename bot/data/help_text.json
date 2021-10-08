@@ -10,10 +10,10 @@
         ],
         "info": {
             "title": "Google Command",
-            "description": "",
-            "usage": "",
-            "input": "",
-            "output": ""
+            "description": "Uses puppeteer to perform a Google reverse image search of your image. Works for most images. May not work for new OC or heavily edited images.",
+            "usage": "`/google url:<your-image-url>`",
+            "input": "A direct link to your image. Must be a **direct** link. The link must be accessable for everyone.",
+            "output": "_Success_: First this will send an embed with clues from Google. Some keywords as well as the first <=5 images from the search will be shown alongside a screenshot of the search entries first page. Secondly this will send an embed containing the first <=5 sites which host your image.\n\n_Error_: This will send an error embed for the image search, if no images are found. The second part of the success embed may be sent if some results are found."
         }
     },
     "help": {

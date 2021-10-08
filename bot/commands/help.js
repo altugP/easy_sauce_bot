@@ -58,6 +58,24 @@ function _buildErrorEmbed(interaction, commandNames) {
     return embed
 }
 
+function _buildInfoEmbed(interaction, input) {
+    const info = helpData[input].info
+    const embed = new MessageEmbed()
+        .setColor(process.env.COLOR_INFORMATION)
+        .setAuthor(interaction.client.user.username,
+            interaction.client.user.avatarURL())
+        .setTitle(info.title)
+        .setDescription(info.description)
+        .setThumbnail(interaction.client.user.avatarURL())
+        .addFields(
+            { name: 'Usage', value: info.usage, },
+            { name: 'Input', value: info.input, },
+            { name: 'Output', value: info.output, },
+        )
+        .setTimestamp()
+    return embed
+}
+
 // ############################################################################
 // Exports.
 // ############################################################################
@@ -86,9 +104,7 @@ module.exports = {
             if (!commandNames.includes(input)) {
                 embed = _buildErrorEmbed(interaction, commandNames)
             } else {
-                // TODO: info embed
-                console.log('Info Embed requested.')
-                embed = _buildOverviewEmbed(interaction)
+                embed = _buildInfoEmbed(interaction, input)
             }
         }
 
