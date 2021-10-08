@@ -7,7 +7,14 @@
             "site search",
             "google",
             "takes long"
-        ]
+        ],
+        "info": {
+            "title": "Google Command",
+            "description": "",
+            "usage": "",
+            "input": "",
+            "output": ""
+        }
     },
     "help": {
         "command": "/help",
@@ -16,7 +23,14 @@
             "bot",
             "info",
             "help"
-        ]
+        ],
+        "info": {
+            "title": "Help Command",
+            "description": "",
+            "usage": "",
+            "input": "",
+            "output": ""
+        }
     },
     "rps": {
         "command": "/rps",
@@ -26,7 +40,14 @@
             "fun",
             "rps",
             "rock paper scissors"
-        ]
+        ],
+        "info": {
+            "title": "Rck Paper Scissors Command",
+            "description": "",
+            "usage": "",
+            "input": "",
+            "output": ""
+        }
     },
     "saucenao": {
         "command": "/saucenao",
@@ -35,7 +56,14 @@
             "image search",
             "source",
             "SauceNao"
-        ]
+        ],
+        "info": {
+            "title": "SauceNao Command",
+            "description": "",
+            "usage": "",
+            "input": "",
+            "output": ""
+        }
     },
     "sauces": {
         "command": "/sauces",
@@ -44,7 +72,14 @@
             "fun",
             "recipe",
             "sauce"
-        ]
+        ],
+        "info": {
+            "title": "Sauces Command",
+            "description": "",
+            "usage": "",
+            "input": "",
+            "output": ""
+        }
     },
     "tineye": {
         "command": "/tineye",
@@ -54,6 +89,13 @@
             "source",
             "TinEye",
             "takes long"
-        ]
+        ],
+        "info": {
+            "title": "TinEye Command",
+            "description": "",
+            "usage": "",
+            "input": "",
+            "output": ""
+        }
     }
 }
