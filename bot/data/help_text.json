@@ -1,0 +1,59 @@
+{
+    "google": {
+        "command": "/google",
+        "description": "Search for similar images or sites containing your image on Google.",
+        "tags": [
+            "image search",
+            "site search",
+            "google",
+            "takes long"
+        ]
+    },
+    "help": {
+        "command": "/help",
+        "description": "Get an overview of all commands and information of each specific command.",
+        "tags": [
+            "bot",
+            "info",
+            "help"
+        ]
+    },
+    "rps": {
+        "command": "/rps",
+        "description": "Play rock paper scissors against the bot.",
+        "tags": [
+            "game",
+            "fun",
+            "rps",
+            "rock paper scissors"
+        ]
+    },
+    "saucenao": {
+        "command": "/saucenao",
+        "description": "Search for the source of your image on SauceNao.",
+        "tags": [
+            "image search",
+            "source",
+            "SauceNao"
+        ]
+    },
+    "sauces": {
+        "command": "/sauces",
+        "description": "Get recipes for basic sauces.",
+        "tags": [
+            "fun",
+            "recipe",
+            "sauce"
+        ]
+    },
+    "tineye": {
+        "command": "/tineye",
+        "description": "Search for the source of your image on TinEye.",
+        "tags": [
+            "image search",
+            "source",
+            "TinEye",
+            "takes long"
+        ]
+    }
+}
