@@ -11,7 +11,7 @@
         "info": {
             "title": "Google Command",
             "description": "Uses puppeteer to perform a Google reverse image search of your image. Works for most images. May not work for new OC or heavily edited images.",
-            "usage": "`/google url:<your-image-url>`",
+            "usage": "`/google url: <your-image-url>`",
             "input": "A direct link to your image. Must be a **direct** link. The link must be accessable for everyone.",
             "output": "_Success_: First this will send an embed with clues from Google. Some keywords as well as the first <=5 images from the search will be shown alongside a screenshot of the search entries first page. Secondly this will send an embed containing the first <=5 sites which host your image.\n\n_Error_: This will send an error embed for the image search, if no images are found. The second part of the success embed may be sent if some results are found."
         }
@@ -26,10 +26,10 @@
         ],
         "info": {
             "title": "Help Command",
-            "description": "",
-            "usage": "",
-            "input": "",
-            "output": ""
+            "description": "Gives you an overview of all commands or gives you more detailed information on a specific command.",
+            "usage": "`/help`\n\n`/help command-name: <your command>`",
+            "input": "Either nothing or the command name you want.",
+            "output": "_Overview_: Sends an embed containing basic information on all commands.\n\n_Specfic Command_: Sends either an error embed (if you command doesn't exist) or an embed with detailed information on your command."
         }
     },
     "rps": {
@@ -43,10 +43,10 @@
         ],
         "info": {
             "title": "Rck Paper Scissors Command",
-            "description": "",
-            "usage": "",
-            "input": "",
-            "output": ""
+            "description": "Allows you to play rock paper scissors.",
+            "usage": "`rps choice: <Rock | Paper | Scissors>`",
+            "input": "A choice from the menu.",
+            "output": "Sends a simple text displaying your choice, the enemies choice and a result."
         }
     },
     "saucenao": {
@@ -59,10 +59,10 @@
         ],
         "info": {
             "title": "SauceNao Command",
-            "description": "",
-            "usage": "",
-            "input": "",
-            "output": ""
+            "description": "Uses the SauceNao API to perform a search on your image. Works best for Anime/Manga images as well as fanart, since SauceNao mostly searches sites that host those kind of images.",
+            "usage": "`/saucenao url: <your-image-url>`",
+            "input": "A direct link to your image. Must be a **direct** link. The link must be accessable for everyone.\n\nA number between 0 and 10 both inclusive. This will be the max amount of entries that are to be returned as embeds. Defaults to 5 entries if the number is not in this range or not given.",
+            "output": "_Success_: This will send <=5 embeds as a message containing the first <=5 entries on SauceNao.\n\n_Error_: This will send an error embed with some information to what went wrong."
         }
     },
     "sauces": {
@@ -75,10 +75,10 @@
         ],
         "info": {
             "title": "Sauces Command",
-            "description": "",
-            "usage": "",
-            "input": "",
-            "output": ""
+            "description": "From a list of sauces select one and this will send a recipe for such a sauce.",
+            "usage": "`/sauces sauce-choice: <your-sauce>`",
+            "input": "A sauce from the menu.",
+            "output": "An embed describng how to create such a sauce at home."
         }
     },
     "tineye": {
@@ -92,10 +92,10 @@
         ],
         "info": {
             "title": "TinEye Command",
-            "description": "",
-            "usage": "",
-            "input": "",
-            "output": ""
+            "description": "Uses puppeteer to perform a TinEye reverse image search of your image. Works for most images. May not work for new OC or heavily edited images.",
+            "usage": "`/tineye url: <your-image-url>`\n\n`/tineye url: <your-image-url> amount: <number>`",
+            "input": "A direct link to your image. Must be a **direct** link. The link must be accessable for everyone.\n\nA number between 0 and 11 both inclusive. This will be the max amount of entries that are to be returned as embeds. Defaults to 5 entries if the number is not in this range or not given.",
+            "output": "_Success_: This will send the first <=amount matches that were found by TinEye as embeds.\n\n_0 matches_: This will send an embed describing that no matches were found.\n\n_Error_: This will send an error embed with some information on what went wrong."
         }
     }
 }
