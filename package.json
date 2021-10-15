@@ -12,12 +12,22 @@
     "type": "git",
     "url": "git+https://github.com/altugP/easy_sauce_bot.git"
   },
-  "author": "",
+  "author": {
+    "name": "Altug Paycin",
+    "email": "paycin.altug@gmail.com",
+    "url": "https://github.com/altugP"
+  },
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/altugP/easy_sauce_bot/issues"
   },
   "homepage": "https://github.com/altugP/easy_sauce_bot#readme",
+  "keywords": [
+    "discord",
+    "bot",
+    "discordjs",
+    "puppeteer"
+  ],
   "dependencies": {
     "@discordjs/builders": "^0.6.0",
     "@discordjs/rest": "^0.1.0-canary.0",

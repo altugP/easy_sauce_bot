@@ -1,7 +1,7 @@
 Easy Sauce Bot
 ==============
 
-<p align="center"><img src="./assets/EasySauceBot.png" alt="Project Image" width="150"/></p>
+<p align="center"><img src="./assets/easy_sauce_bot_profile.png" alt="Project Image" width="150"/></p>
 
 > A simple Discord bot to gather information about the source of images.
 
@@ -181,15 +181,15 @@ const errorResult = await api.searchWithSauceNao('nonsense.url')
 <br>
 
 #### Google Search Command `/google`
-![Google Search Command](./assets/commands/googleSearch.gif)
+![Google Search Command](./assets/commands/google_search.gif)
 <br>
 
 #### TinEye Search Command `/tineye`
-![Google Search Command](./assets/commands/tineyeSearch.gif)
+![Google Search Command](./assets/commands/tineye_search.gif)
 <br>
 
 #### Saucenao Search Command `/saucenao`
-![Google Search Command](./assets/commands/saucenaoSearch.gif)
+![Google Search Command](./assets/commands/saucenao_search.gif)
 <br>
 
 #### Rock Paper Scissors Command `/rps`
